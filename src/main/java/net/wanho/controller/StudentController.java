@@ -75,7 +75,13 @@ public class StudentController {
         return "redirect:MainController";
     }
 
-
+    /**
+     * fdf
+     * @param pageNum
+     * @param map
+     * @param select
+     * @return
+     */
     @RequestMapping(value = "/MainController")
     public String queryStuAll(@RequestParam(defaultValue = "1") Integer pageNum,Map map, String select) {
         PageInfo<StudentVo> studentVoPageInfo = studentServiceI.queryStuByPage(pageNum, select);
