@@ -83,11 +83,6 @@ public class StudentController {
         return "main";
     }
 
-//    @RequestMapping(value = "/MainController")
-//    public String queryStuAll(Map map, String select) {
-//        List<StudentVo> studentVos = studentServiceI.queryAllStus(select);
-//        map.put("studentList", studentVos);
-//        return "main";
-//    }
+
 
 }
