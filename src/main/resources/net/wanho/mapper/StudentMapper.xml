@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="net.wanho.mapper.StudentMapper">
+
+    <resultMap id="StuMapper" type="net.wanho.vo.StudentVo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="class_id" property="classId" jdbcType="INTEGER"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="subjectId" column="subject_id" jdbcType="INTEGER"/>
+        <result property="subjectName" column="subject_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--新增学生  拿到自增的主键id-->
+    <insert id="addStu">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT  last_insert_id()
+        </selectKey>
+        INSERT  into student VALUES (NULL,#{name},#{age},#{gender},#{address},#{classId})
+    </insert>
+
+    <!--删除学生-->
+    <delete id="deleteStu">
+        DELETE FROM student WHERE id=#{id}
+    </delete>
+
+    <!--修改学生-->
+    <update id="updateStu">
+        UPDATE student s SET s.name=#{name}, s.age=#{age}, s.gender=#{gender} ,s.address=#{address}, s.class_id=#{classId} where id=#{id}
+    </update>
+
+    <!--删除学生课程关联表里的学生id-->
+    <delete id="delStuSubjectRelation">
+        DELETE FROM stu_subject WHERE stu_id=#{id}
+    </delete>
+
+    <!--修改学生信息时，先修改，再去关联表把该学生删除，最后往关联表新增所修改的学生id-->
+    <insert id="insertStuSubjectRelation">
+        INSERT into stu_subject VALUES (#{stuId} ,#{ssId})
+    </insert>
+    <!--查询所有学生 以及根据姓名模糊查询-->
+    <select id="queryAllStus" resultMap="StuMapper">
+        SELECT
+        s.id,
+        s.name,
+        s.age,
+        s.gender,
+        s.address,
+        s.class_id,
+        c.class_name,
+        sub.subject_name
+        FROM
+        student s
+        LEFT JOIN class c ON s.class_id = c.class_id
+        LEFT JOIN stu_subject ss ON ss.stu_id = s.id
+        LEFT JOIN SUBJECT sub ON sub.subject_id = ss.subject_id
+
+        <where>
+            <if test="select!=null">
+                and name LIKE concat("%",#{select},"%")
+            </if>
+        </where>
+    </select>
+    <select id="queryById" resultMap="StuMapper">
+        SELECT
+			s.id,
+			s.name,
+			s.age,
+			s.gender,
+			s.address,
+			s.class_id,
+			c.class_name,
+			sub.subject_id,
+			sub.subject_name
+		FROM
+			student s
+		LEFT JOIN class c ON s.class_id = c.class_id
+		LEFT JOIN stu_subject ss ON ss.stu_id = s.id
+		LEFT JOIN SUBJECT sub ON sub.subject_id = ss.subject_id
+		where id=#{id}
+    </select>
+
+</mapper>

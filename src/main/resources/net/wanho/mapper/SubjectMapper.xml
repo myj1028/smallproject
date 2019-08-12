@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间，和接口关联-->
+<mapper namespace="net.wanho.mapper.SubjectMapper">
+    <!--查询班级映射-->
+    <resultMap id="subjectMap" type="net.wanho.pojo.Subject">
+        <id column="subject_id" property="subjectId"/>
+        <result column="subject_name" property="subjectName"/>
+    </resultMap>
+    <select id="querySubject" resultMap="subjectMap">
+        select subject_id,subject_name  from subject
+    </select>
+
+
+</mapper>

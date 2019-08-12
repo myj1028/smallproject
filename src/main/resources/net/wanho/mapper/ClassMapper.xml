@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间，和接口关联-->
+<mapper namespace="net.wanho.mapper.ClassMapper">
+	<!--查询班级映射-->
+	<resultMap id="classMap" type="net.wanho.pojo.StuClass">
+		<id column="class_id" property="classId"/>
+		<result column="class_name" property="className"/>
+	</resultMap>
+
+	<!--<insert id="addClass">-->
+		<!--INSERT INTO class VALUES ()-->
+	<!--</insert>-->
+
+	<select id="queryStuClass" resultMap="classMap">
+		select class_id,class_name  from class
+	</select>
+
+
+
+
+
+</mapper>
